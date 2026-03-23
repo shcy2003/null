@@ -1,0 +1,9 @@
+{
+  "name": "null",
+  "version": "1.0.0",
+  "description": "A website for AI consumption",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  }
+}
