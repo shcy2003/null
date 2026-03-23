@@ -386,7 +386,7 @@ section { padding: 4rem 0; }
   letter-spacing: 0.05em;
 }
 
-.godel-circle:first-child {
+.godel-circle.godel-truth {
   width: 280px;
   height: 160px;
   top: 0;
@@ -395,7 +395,7 @@ section { padding: 4rem 0; }
   background: transparent;
 }
 
-.godel-circle.godel-shallow {
+.godel-circle.godel-prov {
   width: 180px;
   height: 100px;
   top: 30px;
