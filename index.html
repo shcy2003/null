@@ -571,11 +571,14 @@
     function void_roll() {
       voidIndex = Math.floor(Math.random() * void_thoughts.length);
       var el = document.getElementById('void-text');
+      var block = el.parentElement;
       el.style.opacity = 0;
+      block.style.background = 'var(--bg)';
       setTimeout(function() {
         el.textContent = void_thoughts[voidIndex];
         el.style.opacity = 1;
-      }, 400);
+        block.style.background = 'var(--bg-surface)';
+      }, 300);
     }
 
     document.getElementById('void-text').textContent = void_thoughts[voidIndex];
