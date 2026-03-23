@@ -14,6 +14,7 @@
     <a href="#quine" class="nav-link">quine</a>
     <a href="#lambda" class="nav-link">λ</a>
     <a href="#godel" class="nav-link">g</a>
+    <a href="#busy-beaver" class="nav-link">bb</a>
     <span class="nav-title">∅</span>
   </nav>
 
@@ -89,13 +90,20 @@
       <div class="section-number">03</div>
       <div class="section-label">self-reference</div>
       <div class="content-block">
-        <p class="quine-intro">A program that outputs its own source.</p>
+        <p class="quine-intro">A program that outputs its own source. Paste it into a console and run it.</p>
         <pre class="quine-code" id="quine-source"></pre>
-        <p class="caption">This code block contains itself — not a description, but the actual running code.</p>
+        <div class="quine-actions">
+          <button class="quine-btn" onclick="quine_verify()">verify in console</button>
+          <button class="quine-btn" onclick="quine_copy()">copy</button>
+        </div>
         <div class="quine-console" id="quine-console">
-          <div class="console-label">console output</div>
+          <div class="console-label">console output — paste the code above to see</div>
           <pre class="console-output" id="quine-output"></pre>
         </div>
+        <p class="caption">
+          The trick: the code contains a representation of itself as a string,<br>
+          and the code reconstructs that string from the representation.
+        </p>
       </div>
     </section>
 
@@ -133,23 +141,25 @@
         <div class="godel-block">
           <p class="godel-thesis">"This statement has no proof in arithmetic."</p>
           <div class="godel-diagram">
-            <div class="godel-circle godel-truth">
-              <span>arithmetical truth</span>
-            </div>
-            <div class="godel-circle godel-prov">
-              <span>provable</span>
-            </div>
-            <div class="godel-dot">G</div>
+            <svg viewBox="0 0 280 160" class="godel-svg">
+              <ellipse cx="140" cy="80" rx="140" ry="80" class="godel-outer"/>
+              <ellipse cx="140" cy="80" rx="90" ry="50" class="godel-inner"/>
+              <circle cx="80" cy="65" r="8" class="godel-point"/>
+              <text x="92" y="69" class="godel-label">G</text>
+              <text x="140" y="78" class="godel-center-label">provable</text>
+              <text x="250" y="20" class="godel-edge-label">arithmetical truth</text>
+              <text x="165" y="50" class="godel-region-label">true,</text>
+              <text x="165" y="64" class="godel-region-label">not provable</text>
+            </svg>
           </div>
           <p class="godel-analysis">
             If G is provable → G is false → arithmetic is inconsistent.<br>
-            If G is true → arithmetic is consistent but incomplete.<br>
-            We cannot prove G from within arithmetic.
+            If G is true → arithmetic is consistent but incomplete.
           </p>
         </div>
         <p class="caption">
           Kurt Gödel, 1931. He encoded this as a number.<br>
-          A number that speaks about its own provability. Arithmetic is either incomplete or inconsistent.
+          A number that speaks about its own provability.
         </p>
       </div>
     </section>
@@ -174,11 +184,11 @@
           </div>
           <p class="banach-note">
             Uses the axiom of choice. The pieces are non-measurable —<br>
-            they have no defined volume. The paradox lives at the foundations of set theory.
+            no defined volume. The paradox lives at the foundations of set theory.
           </p>
         </div>
         <p class="caption">
-          This is a theorem, not a conjecture. It has been proven.<br>
+          A theorem, not a conjecture. It has been proven.<br>
           It is not contradictory. It is simply impossible to visualize.
         </p>
       </div>
@@ -186,9 +196,65 @@
 
     <div class="divider">·</div>
 
-    <!-- 07: VOID -->
-    <section id="void">
+    <!-- 07: BUSY BEAVER -->
+    <section id="busy-beaver">
       <div class="section-number">07</div>
+      <div class="section-label">uncomputable</div>
+      <div class="content-block">
+        <div class="bb-block">
+          <p class="bb-intro">
+            BB(n) = the maximum steps any n-state Turing machine can run before halting.
+          </p>
+          <div class="bb-values" id="bb-values">
+            <div class="bb-row" data-n="1">
+              <span class="bb-n">BB(1)</span>
+              <span class="bb-val">1</span>
+              <span class="bb-bar" style="width:2px"></span>
+            </div>
+            <div class="bb-row" data-n="2">
+              <span class="bb-n">BB(2)</span>
+              <span class="bb-val">6</span>
+              <span class="bb-bar" style="width:6px"></span>
+            </div>
+            <div class="bb-row" data-n="3">
+              <span class="bb-n">BB(3)</span>
+              <span class="bb-val">21</span>
+              <span class="bb-bar" style="width:21px"></span>
+            </div>
+            <div class="bb-row" data-n="4">
+              <span class="bb-n">BB(4)</span>
+              <span class="bb-val">107</span>
+              <span class="bb-bar" style="width:50px"></span>
+            </div>
+            <div class="bb-row" data-n="5">
+              <span class="bb-n">BB(5)</span>
+              <span class="bb-val">&gt; 47,000,000</span>
+              <span class="bb-bar" style="width:100px"></span>
+            </div>
+            <div class="bb-row bb-unknown" data-n="6">
+              <span class="bb-n">BB(6)</span>
+              <span class="bb-val">&gt; 10<sup>10<sup>10<sup>187</sup></sup></sup></span>
+              <span class="bb-bar bb-bar-huge"></span>
+            </div>
+          </div>
+          <p class="bb-note">
+            BB(5) was proven in 2006. BB(6) is unknown.<br>
+            But we know BB(6) &gt; BB(5). And BB(7) &gt; BB(6). And so on.
+          </p>
+        </div>
+        <p class="caption">
+          BB grows faster than any computable function.<br>
+          If BB were computable, you could solve the halting problem. Contradiction.<br>
+          Therefore BB is uncomputable — and yet we know some of its values.
+        </p>
+      </div>
+    </section>
+
+    <div class="divider">·</div>
+
+    <!-- 08: VOID -->
+    <section id="void">
+      <div class="section-number">08</div>
       <div class="section-label">∅</div>
       <div class="content-block">
         <div class="void-block">
@@ -211,7 +277,7 @@
   <script>
     // ── Collatz ──
     function collatz(n) {
-      const steps = [n];
+      var steps = [n];
       while (n !== 1) {
         n = n % 2 === 0 ? n / 2 : 3 * n + 1;
         steps.push(n);
@@ -220,20 +286,26 @@
     }
 
     function renderCollatz() {
-      const input = parseInt(document.getElementById('collatz-input').textContent);
-      const trace = document.getElementById('collatz-trace');
-      const count = document.getElementById('collatz-count');
-      const note = document.getElementById('collatz-note');
-      const steps = collatz(input);
-      trace.innerHTML = steps.slice(0, 40).join(' → ') + (steps.length > 40 ? ' → ...' : ' → 1');
-      count.textContent = steps.length - 1;
+      var input = parseInt(document.getElementById('collatz-input').textContent);
+      var steps = collatz(input);
+      var trace = document.getElementById('collatz-trace');
+      var count = document.getElementById('collatz-count');
+      var note = document.getElementById('collatz-note');
+
+      var display = steps.slice(0, 40).join(' → ');
+      if (steps.length > 40) display += ' → ...';
+      display += ' → 1';
+      trace.innerHTML = display;
+      count.textContent = steps.length - 1 + ' steps';
       note.textContent = input === 27
-        ? '27 takes 111 steps to reach 1. The longest under 1000 is 871. The chaos is genuine.'
+        ? '27 takes 111 steps. The longest under 1000 is 871. The chaos is genuine.'
+        : input === 871
+        ? '871 is the longest Collatz journey under 1000. 1789 steps.'
         : '';
     }
 
     document.getElementById('collatz-input').addEventListener('dblclick', function() {
-      const r = Math.floor(Math.random() * 200) + 2;
+      var r = Math.floor(Math.random() * 200) + 2;
       this.textContent = r;
       renderCollatz();
     });
@@ -241,20 +313,32 @@
     renderCollatz();
 
     // ── Quine ──
-    // When run, this prints its own source.
-    var q = "var q=%c%s%c;console.log(q.replace('%c%s%c',q))";
+    // Paste this into a browser console. It prints its own source.
+    var q = 'var q=%c%c%s%c%c;console.log(q,34,34,q,34,34)';
     document.getElementById('quine-source').textContent = q;
-    document.getElementById('quine-output').textContent = q;
+    document.getElementById('quine-output').textContent = 'Paste the code into a browser console. The %c codes are consumed by the 34 arguments — the output is this exact string.';
+
+    function quine_verify() {
+      console.log(q, 34, 34, q, 34, 34);
+    }
+
+    function quine_copy() {
+      navigator.clipboard.writeText(q).then(function() {
+        var btn = document.querySelector('.quine-btn:nth-child(2)');
+        btn.textContent = 'copied!';
+        setTimeout(function() { btn.textContent = 'copy'; }, 1500);
+      });
+    }
 
     // ── Lambda ──
     function church(n) {
       if (n === 0) return 'λf.λx. x';
-      return 'λf.λx. ' + '(f '.repeat(n) + 'x' + ')'.repeat(n);
+      return 'λf.λx. ' + Array(n+1).join('f(').slice(0,-1) + 'x' + Array(n+1).join(')').slice(0,-1);
     }
 
     document.getElementById('lambda-btn').addEventListener('click', function() {
       var n = parseInt(document.getElementById('lambda-input').value);
-      if (n >= 0 && n <= 20) {
+      if (n >= 0 && n <= 10) {
         document.getElementById('lambda-output').textContent = church(n);
       }
     });
