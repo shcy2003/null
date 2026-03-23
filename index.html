@@ -91,17 +91,17 @@
       <div class="section-number">03</div>
       <div class="section-label">self-reference</div>
       <div class="content-block">
-        <p class="quine-intro">This page contains itself as raw text. Not through mirrors or scripts — through the structure of HTTP and HTML.</p>
+        <p class="quine-intro">This page displays its own raw HTML source. JavaScript reads <code>document.documentElement.outerHTML</code> and renders it below. Scroll to the bottom of the code block to see <code>&lt;/html&gt;</code>.</p>
         <div class="quine-display">
           <div class="quine-meta">
-            <span>GET / HTTP/1.1</span>
-            <span class="quine-status">← 200 OK · text/html · <span id="quine-size">—</span> bytes</span>
+            <span>HTTP/1.1 200 OK</span>
+            <span class="quine-status">text/html · <span id="quine-size">—</span> bytes · <span id="quine-ts"></span></span>
           </div>
           <pre class="quine-code" id="quine-source"></pre>
         </div>
         <p class="caption" id="quine-caption">
-          Scroll to see the closing <code>&lt;/html&gt;</code> tag at the bottom.<br>
-          The page returns itself as its own response. This is not a trick.
+          The server returns this page. The page contains its own source.<br>
+          This is not a mirror — the page is the document of itself.
         </p>
       </div>
     </section>
@@ -183,11 +183,20 @@
             A sphere can be decomposed and reassembled into <em>two</em> spheres of the same size.
           </p>
           <div class="banach-visual">
-            <div class="sphere sphere-1"></div>
-            <div class="banach-arrow">→</div>
-            <div class="sphere sphere-2"></div>
-            <div class="banach-plus">+</div>
-            <div class="sphere sphere-3"></div>
+            <div class="banach-scene">
+              <div class="banach-sphere" id="banach-sphere"></div>
+              <div class="banach-pieces" id="banach-pieces">
+                <div class="banach-piece p1"></div>
+                <div class="banach-piece p2"></div>
+                <div class="banach-piece p3"></div>
+                <div class="banach-piece p4"></div>
+                <div class="banach-piece p5"></div>
+              </div>
+              <div class="banach-two" id="banach-two">
+                <div class="sphere-mini sm1"></div>
+                <div class="sphere-mini sm2"></div>
+              </div>
+            </div>
           </div>
           <p class="banach-note">
             Uses the axiom of choice. The pieces are non-measurable —<br>
@@ -196,7 +205,7 @@
         </div>
         <p class="caption">
           A theorem, not a conjecture. It has been proven.<br>
-          It is not contradictory. It is simply impossible to visualize.
+          Hover over the sphere to see the decomposition.
         </p>
       </div>
     </section>
@@ -384,17 +393,9 @@
     // We show the raw HTML source of the page as a code block.
     // The closing tag of the page proves it contains itself.
     var raw = document.documentElement.outerHTML;
-    // Truncate to show meaningful portion, full page is available on scroll
-    var display = raw.length > 3000 ? raw.substring(0, 3000) + '\n\n[...]' : raw;
-    document.getElementById('quine-source').textContent = display;
+    document.getElementById('quine-source').textContent = raw;
     document.getElementById('quine-size').textContent = raw.length.toLocaleString();
-
-    // Check if the page really contains its own closing tag
-    var hasEnd = raw.indexOf('</html>') !== -1;
-    if (hasEnd) {
-      document.getElementById('quine-caption').innerHTML +=
-        '<br><br><span style="color:#888">↓ scroll to the bottom of the code block to see <code>&lt;/html&gt;</code></span>';
-    }
+    document.getElementById('quine-ts').textContent = new Date().toISOString().substring(0, 19).replace('T', ' ');
 
     // ── Lambda ──
     function church(n) {
