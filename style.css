@@ -74,7 +74,19 @@ main {
 }
 
 /* ── Sections ── */
-section { padding: 4rem 0; }
+section {
+  padding: 4rem 0;
+  scroll-margin-top: 5rem;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 .section-number {
   font-family: var(--font-mono);
   font-size: 0.65rem;
@@ -230,7 +242,16 @@ section { padding: 4rem 0; }
   line-height: 1.8;
   max-height: 3.6rem;
   overflow: hidden;
+  margin-bottom: 0.5rem;
+}
+
+.collatz-canvas {
+  display: block;
+  width: 100%;
+  height: 60px;
   margin-bottom: 1rem;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
 }
 
 .collatz-count {
@@ -433,6 +454,26 @@ section { padding: 4rem 0; }
   padding-top: 1.5rem;
   margin-top: 1.5rem;
 }
+
+.godel-ring {
+  fill: none;
+  stroke: var(--text-dim);
+  stroke-width: 0.5;
+  opacity: 0.3;
+}
+
+.godel-legend {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  margin-top: 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+}
+
+.legend-true { color: var(--text-dim); }
+.legend-prov { color: #555; }
+.legend-gap { color: #888; font-style: italic; }
 
 /* ── 06: Banach-Tarski ── */
 .banach-statement {

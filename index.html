@@ -73,6 +73,7 @@
           </div>
           <p class="collatz-try">try: <span id="collatz-input">27</span></p>
           <div class="collatz-trace" id="collatz-trace"></div>
+          <canvas id="collatz-canvas" class="collatz-canvas" width="580" height="60"></canvas>
           <p class="collatz-count">steps until 1: <span id="collatz-count">—</span></p>
           <p class="collatz-note" id="collatz-note"></p>
         </div>
@@ -141,19 +142,26 @@
           <p class="godel-thesis">"This statement has no proof in arithmetic."</p>
           <div class="godel-diagram">
             <svg viewBox="0 0 280 160" class="godel-svg">
-              <ellipse cx="140" cy="80" rx="140" ry="80" class="godel-outer"/>
-              <ellipse cx="140" cy="80" rx="90" ry="50" class="godel-inner"/>
-              <circle cx="80" cy="65" r="8" class="godel-point"/>
+              <ellipse cx="140" cy="80" rx="140" ry="80" class="godel-outer" role="img" aria-label="Arithmetical truth: all statements that are true of natural numbers"/>
+              <ellipse cx="140" cy="80" rx="90" ry="50" class="godel-inner" role="img" aria-label="Provable: statements that can be derived from axioms"/>
+              <!-- Ring region: true but not provable -->
+              <path d="M 230 80 A 90 50 0 0 1 50 80 A 140 80 0 0 0 230 80" class="godel-ring" role="img" aria-label="True but not provable region"/>
+              <circle cx="80" cy="65" r="8" class="godel-point" role="img" aria-label="G: Gödel's statement"/>
               <text x="92" y="69" class="godel-label">G</text>
               <text x="140" y="78" class="godel-center-label">provable</text>
-              <text x="248" y="22" class="godel-edge-label">arithmetical truth</text>
-              <text x="162" y="52" class="godel-region-label">true,</text>
-              <text x="162" y="66" class="godel-region-label">not provable</text>
+              <text x="248" y="22" class="godel-edge-label">truth</text>
+              <text x="170" y="58" class="godel-region-label">true,</text>
+              <text x="170" y="72" class="godel-region-label">not provable</text>
             </svg>
           </div>
           <p class="godel-analysis">
             If G is provable → G is false → arithmetic is inconsistent.<br>
             If G is true → arithmetic is consistent but incomplete.
+          </p>
+          <p class="godel-legend">
+            <span class="legend-true">● truth</span>
+            <span class="legend-prov">● provable</span>
+            <span class="legend-gap">● true, not provable</span>
           </p>
         </div>
         <p class="caption">
@@ -291,6 +299,7 @@
       var trace = document.getElementById('collatz-trace');
       var count = document.getElementById('collatz-count');
       var note = document.getElementById('collatz-note');
+      var canvas = document.getElementById('collatz-canvas');
 
       var display = steps.slice(0, 40).join(' → ');
       if (steps.length > 40) display += ' → ...';
@@ -302,6 +311,31 @@
         : input === 871
         ? '871 is the longest Collatz journey under 1000. 1789 steps.'
         : '';
+
+      // Draw sparkline
+      var ctx = canvas.getContext('2d');
+      var w = canvas.width;
+      var h = canvas.height;
+      var max = Math.max.apply(null, steps);
+      ctx.clearRect(0, 0, w, h);
+      ctx.strokeStyle = '#555';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      var lastX = 0;
+      var lastY = h - (steps[0] / max) * (h - 8) - 4;
+      ctx.moveTo(lastX, lastY);
+      for (var i = 1; i < Math.min(steps.length, 200); i++) {
+        var x = (i / Math.min(steps.length, 200)) * w;
+        var y = h - (steps[i] / max) * (h - 8) - 4;
+        ctx.lineTo(x, y);
+        lastX = x; lastY = y;
+      }
+      ctx.stroke();
+      // Last dot at 1
+      ctx.fillStyle = '#888';
+      ctx.beginPath();
+      ctx.arc(lastX, h - 4, 2, 0, Math.PI * 2);
+      ctx.fill();
     }
 
     document.getElementById('collatz-input').addEventListener('dblclick', function() {
@@ -388,6 +422,19 @@
 
     document.getElementById('void-text').textContent = void_thoughts[voidIndex];
     document.getElementById('void-text').style.transition = 'opacity 0.4s';
+
+    // ── Scroll animations ──
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('section').forEach(function(section) {
+      observer.observe(section);
+    });
 
     // ── Clock ──
     function updateTime() {
