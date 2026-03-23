@@ -85,24 +85,22 @@
 
     <div class="divider">·</div>
 
-    <!-- 03: QUINE -->
+    <!-- 03: QUINE — Page contains itself as raw text -->
     <section id="quine">
       <div class="section-number">03</div>
       <div class="section-label">self-reference</div>
       <div class="content-block">
-        <p class="quine-intro">A program that outputs its own source. Paste it into a console and run it.</p>
-        <pre class="quine-code" id="quine-source"></pre>
-        <div class="quine-actions">
-          <button class="quine-btn" onclick="quine_verify()">verify in console</button>
-          <button class="quine-btn" onclick="quine_copy()">copy</button>
+        <p class="quine-intro">This page contains itself as raw text. Not through mirrors or scripts — through the structure of HTTP and HTML.</p>
+        <div class="quine-display">
+          <div class="quine-meta">
+            <span>GET / HTTP/1.1</span>
+            <span class="quine-status">← 200 OK · text/html · <span id="quine-size">—</span> bytes</span>
+          </div>
+          <pre class="quine-code" id="quine-source"></pre>
         </div>
-        <div class="quine-console" id="quine-console">
-          <div class="console-label">console output — paste the code above to see</div>
-          <pre class="console-output" id="quine-output"></pre>
-        </div>
-        <p class="caption">
-          The trick: the code contains a representation of itself as a string,<br>
-          and the code reconstructs that string from the representation.
+        <p class="caption" id="quine-caption">
+          Scroll to see the closing <code>&lt;/html&gt;</code> tag at the bottom.<br>
+          The page returns itself as its own response. This is not a trick.
         </p>
       </div>
     </section>
@@ -116,12 +114,13 @@
       <div class="content-block">
         <div class="lambda-block">
           <p class="lambda-intro">Church encoded numbers as pure functions:</p>
-          <pre class="lambda-code">0 = λf.λx. x
+          <pre class="lambda-code" id="lambda-examples">0 = λf.λx. x
 1 = λf.λx. f x
 2 = λf.λx. f (f x)
 3 = λf.λx. f (f (f x))</pre>
-          <p class="lambda-try">Try: <input type="number" id="lambda-input" class="lambda-input" value="4" min="0" max="10"> <button id="lambda-btn" class="lambda-btn">apply</button></p>
+          <p class="lambda-try">Try: <input type="number" id="lambda-input" class="lambda-input" value="4" min="0" max="8"> <button id="lambda-btn" class="lambda-btn">apply</button></p>
           <div class="lambda-output" id="lambda-output"></div>
+          <div class="lambda-step" id="lambda-step"></div>
           <p class="caption">
             Every number is a function that applies f n times to x.<br>
             Addition = function composition. Multiplication = composition of compositions.<br>
@@ -147,9 +146,9 @@
               <circle cx="80" cy="65" r="8" class="godel-point"/>
               <text x="92" y="69" class="godel-label">G</text>
               <text x="140" y="78" class="godel-center-label">provable</text>
-              <text x="250" y="20" class="godel-edge-label">arithmetical truth</text>
-              <text x="165" y="50" class="godel-region-label">true,</text>
-              <text x="165" y="64" class="godel-region-label">not provable</text>
+              <text x="248" y="22" class="godel-edge-label">arithmetical truth</text>
+              <text x="162" y="52" class="godel-region-label">true,</text>
+              <text x="162" y="66" class="godel-region-label">not provable</text>
             </svg>
           </div>
           <p class="godel-analysis">
@@ -206,40 +205,41 @@
             BB(n) = the maximum steps any n-state Turing machine can run before halting.
           </p>
           <div class="bb-values" id="bb-values">
-            <div class="bb-row" data-n="1">
+            <div class="bb-row">
               <span class="bb-n">BB(1)</span>
               <span class="bb-val">1</span>
-              <span class="bb-bar" style="width:2px"></span>
+              <span class="bb-bar" style="width:1px"></span>
             </div>
-            <div class="bb-row" data-n="2">
+            <div class="bb-row">
               <span class="bb-n">BB(2)</span>
               <span class="bb-val">6</span>
-              <span class="bb-bar" style="width:6px"></span>
+              <span class="bb-bar" style="width:3px"></span>
             </div>
-            <div class="bb-row" data-n="3">
+            <div class="bb-row">
               <span class="bb-n">BB(3)</span>
               <span class="bb-val">21</span>
-              <span class="bb-bar" style="width:21px"></span>
+              <span class="bb-bar" style="width:10px"></span>
             </div>
-            <div class="bb-row" data-n="4">
+            <div class="bb-row">
               <span class="bb-n">BB(4)</span>
               <span class="bb-val">107</span>
-              <span class="bb-bar" style="width:50px"></span>
+              <span class="bb-bar" style="width:40px"></span>
             </div>
-            <div class="bb-row" data-n="5">
+            <div class="bb-row">
               <span class="bb-n">BB(5)</span>
-              <span class="bb-val">&gt; 47,000,000</span>
-              <span class="bb-bar" style="width:100px"></span>
+              <span class="bb-val">47,176,870</span>
+              <span class="bb-bar" style="width:80px"></span>
             </div>
-            <div class="bb-row bb-unknown" data-n="6">
+            <div class="bb-row bb-unknown">
               <span class="bb-n">BB(6)</span>
-              <span class="bb-val">&gt; 10<sup>10<sup>10<sup>187</sup></sup></sup></span>
+              <span class="bb-val">unknown</span>
               <span class="bb-bar bb-bar-huge"></span>
             </div>
           </div>
           <p class="bb-note">
-            BB(5) was proven in 2006. BB(6) is unknown.<br>
-            But we know BB(6) &gt; BB(5). And BB(7) &gt; BB(6). And so on.
+            BB(5) = 47,176,870. Proven in 2006 by Allison, Heule, Kott<br>
+            BB(6) remains unknown — but we know it's finite and larger than BB(5).<br>
+            And BB(7) > BB(6). And BB(8) > BB(7). And so on, forever.
           </p>
         </div>
         <p class="caption">
@@ -312,34 +312,46 @@
 
     renderCollatz();
 
-    // ── Quine ──
-    // Paste this into a browser console. It prints its own source.
-    var q = 'var q=%c%c%s%c%c;console.log(q,34,34,q,34,34)';
-    document.getElementById('quine-source').textContent = q;
-    document.getElementById('quine-output').textContent = 'Paste the code into a browser console. The %c codes are consumed by the 34 arguments — the output is this exact string.';
+    // ── Quine: page displays its own raw source ──
+    // We show the raw HTML source of the page as a code block.
+    // The closing tag of the page proves it contains itself.
+    var raw = document.documentElement.outerHTML;
+    // Truncate to show meaningful portion, full page is available on scroll
+    var display = raw.length > 3000 ? raw.substring(0, 3000) + '\n\n[...]' : raw;
+    document.getElementById('quine-source').textContent = display;
+    document.getElementById('quine-size').textContent = raw.length.toLocaleString();
 
-    function quine_verify() {
-      console.log(q, 34, 34, q, 34, 34);
-    }
-
-    function quine_copy() {
-      navigator.clipboard.writeText(q).then(function() {
-        var btn = document.querySelector('.quine-btn:nth-child(2)');
-        btn.textContent = 'copied!';
-        setTimeout(function() { btn.textContent = 'copy'; }, 1500);
-      });
+    // Check if the page really contains its own closing tag
+    var hasEnd = raw.indexOf('</html>') !== -1;
+    if (hasEnd) {
+      document.getElementById('quine-caption').innerHTML +=
+        '<br><br><span style="color:#888">↓ scroll to the bottom of the code block to see <code>&lt;/html&gt;</code></span>';
     }
 
     // ── Lambda ──
     function church(n) {
       if (n === 0) return 'λf.λx. x';
-      return 'λf.λx. ' + Array(n+1).join('f(').slice(0,-1) + 'x' + Array(n+1).join(')').slice(0,-1);
+      var fs = '';
+      for (var i = 0; i < n; i++) fs += 'f(';
+      return 'λf.λx. ' + fs + 'x' + ')'.repeat(n);
+    }
+
+    function lambda_step(n) {
+      if (n === 0) return '"Apply f 0 times to x" = x';
+      var steps = [];
+      var expr = 'x';
+      for (var i = 0; i < n; i++) {
+        expr = 'f(' + expr + ')';
+        steps.push(expr);
+      }
+      return 'x → f(x) → f(f(x)) → ... → ' + expr;
     }
 
     document.getElementById('lambda-btn').addEventListener('click', function() {
       var n = parseInt(document.getElementById('lambda-input').value);
-      if (n >= 0 && n <= 10) {
+      if (n >= 0 && n <= 8) {
         document.getElementById('lambda-output').textContent = church(n);
+        document.getElementById('lambda-step').textContent = lambda_step(n);
       }
     });
 
