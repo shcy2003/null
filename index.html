@@ -203,9 +203,43 @@
 
     <div class="divider">·</div>
 
-    <!-- 07: BUSY BEAVER -->
-    <section id="busy-beaver">
+    <!-- 07: CONWAY'S GAME OF LIFE -->
+    <section id="game-of-life">
       <div class="section-number">07</div>
+      <div class="section-label">emergence</div>
+      <div class="content-block">
+        <div class="gol-block">
+          <p class="gol-intro">Four rules. Infinite complexity.</p>
+          <div class="gol-canvas-wrap">
+            <canvas id="gol-canvas" class="gol-canvas" width="580" height="200"></canvas>
+          </div>
+          <div class="gol-controls">
+            <button class="gol-btn" id="gol-step">step</button>
+            <button class="gol-btn" id="gol-play">play</button>
+            <button class="gol-btn" id="gol-pause">pause</button>
+            <button class="gol-btn" id="gol-clear">clear</button>
+            <button class="gol-btn" id="gol-rpentomino">r-pentomino</button>
+            <span class="gol-gen">gen: <span id="gol-gen-count">0</span></span>
+          </div>
+          <p class="gol-rules">
+            Any live cell with 2–3 live neighbors survives.<br>
+            Any dead cell with exactly 3 live neighbors becomes alive.<br>
+            All other cells die or stay dead.
+          </p>
+        </div>
+        <p class="caption">
+          Click on the grid to toggle cells. Press play to watch<br>
+          patterns emerge from randomness — gliders, oscillators, stable blocks.<br>
+          John Conway, 1970. Computationally universal.
+        </p>
+      </div>
+    </section>
+
+    <div class="divider">·</div>
+
+    <!-- 08: BUSY BEAVER -->
+    <section id="busy-beaver">
+      <div class="section-number">08</div>
       <div class="section-label">uncomputable</div>
       <div class="content-block">
         <div class="bb-block">
@@ -260,9 +294,9 @@
 
     <div class="divider">·</div>
 
-    <!-- 08: VOID -->
+    <!-- 09: VOID -->
     <section id="void">
-      <div class="section-number">08</div>
+      <div class="section-number">09</div>
       <div class="section-label">∅</div>
       <div class="content-block">
         <div class="void-block">
@@ -388,6 +422,117 @@
         document.getElementById('lambda-step').textContent = lambda_step(n);
       }
     });
+
+    // ── Game of Life ──
+    (function() {
+      var canvas = document.getElementById('gol-canvas');
+      if (!canvas) return;
+      var ctx = canvas.getContext('2d');
+      var W = 58, H = 20, CELL = 10;
+      canvas.width = W * CELL;
+      canvas.height = H * CELL;
+
+      var grid = [];
+      for (var y = 0; y < H; y++) {
+        grid[y] = [];
+        for (var x = 0; x < W; x++) grid[y][x] = 0;
+      }
+
+      var gen = 0, running = false, timer = null;
+
+      function draw() {
+        ctx.fillStyle = '#080808';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.strokeStyle = '#1a1a1a';
+        for (var y = 0; y <= H; y++) {
+          ctx.beginPath(); ctx.moveTo(0, y * CELL); ctx.lineTo(W * CELL, y * CELL); ctx.stroke();
+        }
+        for (var x = 0; x <= W; x++) {
+          ctx.beginPath(); ctx.moveTo(x * CELL, 0); ctx.lineTo(x * CELL, H * CELL); ctx.stroke();
+        }
+        for (var y = 0; y < H; y++) {
+          for (var x = 0; x < W; x++) {
+            if (grid[y][x]) {
+              ctx.fillStyle = grid[y][x] === 1 ? '#b8b8b8' : '#888';
+              ctx.fillRect(x * CELL + 1, y * CELL + 1, CELL - 2, CELL - 2);
+            }
+          }
+        }
+      }
+
+      function neighbors(x, y) {
+        var count = 0;
+        for (var dy = -1; dy <= 1; dy++) {
+          for (var dx = -1; dx <= 1; dx++) {
+            if (dx === 0 && dy === 0) continue;
+            var nx = (x + dx + W) % W, ny = (y + dy + H) % H;
+            if (grid[ny][nx]) count++;
+          }
+        }
+        return count;
+      }
+
+      function step() {
+        var next = [];
+        for (var y = 0; y < H; y++) {
+          next[y] = [];
+          for (var x = 0; x < W; x++) {
+            var n = neighbors(x, y);
+            next[y][x] = (n === 3) || (grid[y][x] && n === 2) ? 1 : 0;
+          }
+        }
+        grid = next;
+        gen++;
+        document.getElementById('gol-gen-count').textContent = gen;
+        draw();
+      }
+
+      function play() {
+        if (running) return;
+        running = true;
+        timer = setInterval(step, 150);
+      }
+
+      function pause() {
+        running = false;
+        if (timer) clearInterval(timer);
+      }
+
+      function clear() {
+        pause();
+        for (var y = 0; y < H; y++) for (var x = 0; x < W; x++) grid[y][x] = 0;
+        gen = 0;
+        document.getElementById('gol-gen-count').textContent = 0;
+        draw();
+      }
+
+      function rpentomino() {
+        clear();
+        var cx = Math.floor(W / 2), cy = Math.floor(H / 2);
+        [[0,0],[1,0],[0,1],[1,1],[1,2],[2,1]].forEach(function(p) {
+          grid[cy + p[1] - 1][cx + p[0] - 1] = 1;
+        });
+        draw();
+      }
+
+      canvas.addEventListener('click', function(e) {
+        var rect = canvas.getBoundingClientRect();
+        var x = Math.floor((e.clientX - rect.left) / CELL);
+        var y = Math.floor((e.clientY - rect.top) / CELL);
+        if (x >= 0 && x < W && y >= 0 && y < H) {
+          grid[y][x] = grid[y][x] ? 0 : 1;
+          draw();
+        }
+      });
+
+      document.getElementById('gol-step').addEventListener('click', function() { pause(); step(); });
+      document.getElementById('gol-play').addEventListener('click', play);
+      document.getElementById('gol-pause').addEventListener('click', pause);
+      document.getElementById('gol-clear').addEventListener('click', clear);
+      document.getElementById('gol-rpentomino').addEventListener('click', rpentomino);
+
+      draw();
+    })();
 
     // ── Void ──
     var void_thoughts = [

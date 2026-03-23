@@ -529,8 +529,70 @@ section.visible {
   line-height: 1.8;
 }
 
+/* ── 07: Game of Life ── */
+.gol-intro {
+  font-size: 0.9rem;
+  color: var(--text-dim);
+  margin-bottom: 1rem;
+}
 
-/* ── 07: Busy Beaver ── */
+.gol-canvas-wrap {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  padding: 0;
+  overflow: hidden;
+  margin-bottom: 0;
+}
+
+.gol-canvas {
+  display: block;
+  cursor: crosshair;
+}
+
+.gol-controls {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+  margin: 0.8rem 0;
+  flex-wrap: wrap;
+}
+
+.gol-btn {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  padding: 0.3rem 0.8rem;
+  cursor: pointer;
+  letter-spacing: 0.08em;
+  transition: all 0.2s;
+}
+
+.gol-btn:hover {
+  border-color: var(--text-dim);
+  color: var(--text-bright);
+}
+
+.gol-gen {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  margin-left: 0.5rem;
+}
+
+.gol-rules {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  line-height: 1.8;
+  border-top: 1px solid var(--border);
+  padding-top: 1rem;
+  margin-top: 1rem;
+}
+
+
+/* ── 08: Busy Beaver ── */
 .bb-intro {
   font-size: 0.9rem;
   color: var(--text-dim);
