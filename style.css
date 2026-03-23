@@ -387,6 +387,35 @@ section.visible {
   font-style: italic;
 }
 
+.lambda-tree {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  min-height: 1.5rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.tree-x {
+  color: var(--text-bright);
+  font-weight: bold;
+}
+
+.tree-f {
+  color: var(--text-dim);
+}
+
+.tree-level {
+  color: var(--text-dim);
+}
+
+.tree-arrow {
+  color: var(--border);
+  font-size: 0.7rem;
+}
+
 /* ── 05: Gödel ── */
 .godel-thesis {
   font-size: 1.1rem;
